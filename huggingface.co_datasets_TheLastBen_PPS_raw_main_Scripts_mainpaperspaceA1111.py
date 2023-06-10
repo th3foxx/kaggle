@@ -17,14 +17,14 @@ from tqdm import tqdm
 
 def Deps(force_reinstall):
 
-    if not force_reinstall and os.path.exists('/usr/local/lib/python3.9/dist-packages/safetensors'):
+    if not force_reinstall and os.path.exists('/usr/local/lib/python3.10/dist-packages/safetensors'):
         ntbk()
         print('[1;32mModules and notebooks updated, dependencies already installed')
 
     else:
         call("pip install --root-user-action=ignore --no-deps -q accelerate==0.12.0", shell=True, stdout=open('/dev/null', 'w'))
-        if not os.path.exists('/usr/local/lib/python3.9/dist-packages/safetensors'):
-            os.chdir('/usr/local/lib/python3.9/dist-packages')
+        if not os.path.exists('/usr/local/lib/python3.10/dist-packages/safetensors'):
+            os.chdir('/usr/local/lib/python3.10/dist-packages')
             call("rm -r torch torch-1.12.1+cu116.dist-info torchaudio* torchvision* PIL Pillow* transformers* numpy* gdown*", shell=True, stdout=open('/dev/null', 'w'))
         ntbk()
         if not os.path.exists('/models'):
@@ -41,7 +41,7 @@ def Deps(force_reinstall):
         call('dpkg -i *.deb', shell=True, stdout=open('/dev/null', 'w'))
         depsinst("https://huggingface.co/TheLastBen/dependencies/resolve/main/ppsdeps.tar.zst", "/deps/ppsdeps.tar.zst")
         call('tar -C / --zstd -xf ppsdeps.tar.zst', shell=True, stdout=open('/dev/null', 'w'))
-        call("sed -i 's@~/.cache@/kaggle/working//cache@' /usr/local/lib/python3.9/dist-packages/transformers/utils/hub.py", shell=True)
+        call("sed -i 's@~/.cache@/kaggle/working//cache@' /usr/local/lib/python3.10/dist-packages/transformers/utils/hub.py", shell=True)
         os.chdir('/kaggle/working/')
         call("git clone --depth 1 -q --branch main https://github.com/TheLastBen/diffusers /diffusers", shell=True, stdout=open('/dev/null', 'w'), stderr=open('/dev/null', 'w'))
         call('pip install --root-user-action=ignore --disable-pip-version-check -qq tomesd', shell=True, stdout=open('/dev/null', 'w'))
@@ -262,11 +262,11 @@ def sdui(User, Password, model):
       auth=""
 
     
-    call('wget -q -O /usr/local/lib/python3.9/dist-packages/gradio/blocks.py https://raw.githubusercontent.com/TheLastBen/fast-stable-diffusion/main/AUTOMATIC1111_files/blocks.py', shell=True)
+    call('wget -q -O /usr/local/lib/python3.10/dist-packages/gradio/blocks.py https://raw.githubusercontent.com/TheLastBen/fast-stable-diffusion/main/AUTOMATIC1111_files/blocks.py', shell=True)
     
     localurl="tensorboard-"+os.environ.get('PAPERSPACE_FQDN')
     
-    for line in fileinput.input('/usr/local/lib/python3.9/dist-packages/gradio/blocks.py', inplace=True):
+    for line in fileinput.input('/usr/local/lib/python3.10/dist-packages/gradio/blocks.py', inplace=True):
       if line.strip().startswith('self.server_name ='):
           line = f'            self.server_name = "{localurl}"\n'
       if line.strip().startswith('self.protocol = "https"'):
